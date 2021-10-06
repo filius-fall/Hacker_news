@@ -1,12 +1,12 @@
 import os
 import re
-from Google import Create_Service
+from .sheets_instance import create_service
 from decouple import config
 
 from dotenv import load_dotenv
 from pathlib import Path 
 
-from get_news import list_of_dicts,list_of_lists,new_thread_id
+from .get_news import list_of_dicts,list_of_lists,new_thread_id
 
 dotenv_path = str(os.path.expanduser('~')) +'/.config/hackerjobs/.env'
 load_dotenv(dotenv_path=dotenv_path)
@@ -26,7 +26,10 @@ api_version = os.getenv("API_VERSION")
 scopes = ['https://www.googleapis.com/auth/spreadsheets']
 
 
-service = Create_Service(client_file, api_name, api_version, scopes)
+def service_initiation():
+
+    return create_service(client_file, api_name, api_version, scopes)
+
 range_name = 'A1'
 
 spreadsheet_id = config("SPREAD_SHEET_ID")
@@ -39,6 +42,7 @@ def add_data_to_sheets(data,range_name,spreadsheet_id):
     'values': data,
     'majorDimension': 'ROWS',
     }
+    service = service_initiation()
     result = service.spreadsheets().values().update(
         spreadsheetId=spreadsheet_id, range=range_name,valueInputOption='USER_ENTERED',
         body=body).execute()
@@ -59,6 +63,8 @@ def add_to_sheets():
     'values': list_of_lists,
     'majorDimension': 'ROWS',
     }
+    service = service_initiation()
+
     result = service.spreadsheets().values().append(
         spreadsheetId=spreadsheet_id, range="A2:J2",valueInputOption='USER_ENTERED',insertDataOption="INSERT_ROWS",
         body=body).execute()
@@ -66,10 +72,11 @@ def add_to_sheets():
 
 # add_to_sheets()
 
-# add_heading_to_sheets()
+
 
 
 def get_values_from_sheets():
+    service = service_initiation()
 
     result1 = service.spreadsheets().values().get(
     spreadsheetId=spreadsheet_id, range="A2").execute()
@@ -80,9 +87,10 @@ def get_values_from_sheets():
         spreadsheetId=spreadsheet_id,
         range='A:Z'
     ).execute()
-
-    return result['values'][-1][-2]
-
+    try:
+        return result['values'][-1][-2]
+    except KeyError:
+        return 0
 
 def is_same_thread():
     try:
@@ -91,9 +99,13 @@ def is_same_thread():
         last_value = 0
     print(last_value,new_thread_id)
     if last_value == int(new_thread_id):
-        return "ss"
+        return None
     else:
         print("ADDDDING TO SHEEEEEETSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
         add_to_sheets()
 
+
+def execute_sheets():
+    add_heading_to_sheets()
+    is_same_thread()
 
