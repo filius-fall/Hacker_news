@@ -1,5 +1,5 @@
 import click
-from ..sh import execute_sheets
+from ..load_values_to_sheets import execute_sheets
 
 from ..main import move_file_to_config,env_file_op
 

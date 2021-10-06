@@ -6,7 +6,7 @@ from decouple import config
 from dotenv import load_dotenv
 from pathlib import Path 
 
-from .get_news import list_of_dicts,list_of_lists,new_thread_id
+from .get_news import new_thread_id,make_lists
 
 dotenv_path = str(os.path.expanduser('~')) +'/.config/hackerjobs/.env'
 load_dotenv(dotenv_path=dotenv_path)
@@ -20,19 +20,23 @@ load_dotenv(dotenv_path=dotenv_path)
 
 
 
-client_file = str(os.path.expanduser('~')) +'/.config/hackerjobs/'+str(os.getenv("CLIENT_SECRET_FILE"))
-api_name = os.getenv("API_NAME")
-api_version = os.getenv("API_VERSION")
-scopes = ['https://www.googleapis.com/auth/spreadsheets']
 
 
 def service_initiation():
 
+    client_file = str(os.path.expanduser('~')) +'/.config/hackerjobs/'+str(os.getenv("CLIENT_SECRET_FILE"))
+    api_name = os.getenv("API_NAME")
+    api_version = os.getenv("API_VERSION")
+    scopes = ['https://www.googleapis.com/auth/spreadsheets']
+
     return create_service(client_file, api_name, api_version, scopes)
 
-range_name = 'A1'
+# range_name = 'A1'
 
 spreadsheet_id = config("SPREAD_SHEET_ID")
+
+
+
 
 
 
@@ -54,13 +58,13 @@ def add_data_to_sheets(data,range_name,spreadsheet_id):
 def add_heading_to_sheets():
 
 
-    heading_list = [list(list_of_dicts[0].keys())]
+    heading_list = [list(make_lists()['list_of_dicts'][0].keys())]
     add_data_to_sheets(heading_list,"A1:Z1",spreadsheet_id)
 
 
 def add_to_sheets():
     body = {
-    'values': list_of_lists,
+    'values': make_lists()['list_of_lists'],
     'majorDimension': 'ROWS',
     }
     service = service_initiation()
@@ -97,8 +101,8 @@ def is_same_thread():
         last_value = int(get_values_from_sheets())
     except ValueError:
         last_value = 0
-    print(last_value,new_thread_id)
-    if last_value == int(new_thread_id):
+    # print(last_value,new_thread_id)
+    if last_value == int(new_thread_id()):
         return None
     else:
         print("ADDDDING TO SHEEEEEETSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
