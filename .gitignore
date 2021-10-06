@@ -1,5 +1,5 @@
 .env
-.json
+*.json
 
 *.egg-info*
 __pycache__/
