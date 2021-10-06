@@ -51,9 +51,9 @@ def get_list_of_comments():
 list_of_dicts = []
 list_of_lists = []
 
-def make_lists():
+def make_lists(list_of_comments):
 
-    for i in get_list_of_comments():
+    for i in list_of_comments:
         if not i.deleted:
             req_dict['comment_id'] = i.item_id
             req_dict['submission_date'] = i.submission_time.strftime("%m/%d/%Y, %H:%M:%S")
@@ -75,4 +75,4 @@ def make_lists():
 
 # kii = list(list_of_dicts[0].keys())
 def new_thread_id():
-    return make_lists()['list_of_dicts'][0]['thread_id']
+    return make_lists(get_list_of_comments())['list_of_dicts'][0]['thread_id']

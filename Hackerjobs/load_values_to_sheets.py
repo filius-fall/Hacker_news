@@ -6,7 +6,7 @@ from decouple import config
 from dotenv import load_dotenv
 from pathlib import Path 
 
-from .get_news import new_thread_id,make_lists
+from .get_news import new_thread_id,make_lists,get_list_of_comments
 
 dotenv_path = str(os.path.expanduser('~')) +'/.config/hackerjobs/.env'
 load_dotenv(dotenv_path=dotenv_path)
@@ -55,16 +55,16 @@ def add_data_to_sheets(data,range_name,spreadsheet_id):
 
 
 
-def add_heading_to_sheets():
+def add_heading_to_sheets(list_of_comments):
 
 
-    heading_list = [list(make_lists()['list_of_dicts'][0].keys())]
+    heading_list = [list(make_lists(list_of_comments)['list_of_dicts'][0].keys())]
     add_data_to_sheets(heading_list,"A1:Z1",spreadsheet_id)
 
 
-def add_to_sheets():
+def add_to_sheets(list_of_comments):
     body = {
-    'values': make_lists()['list_of_lists'],
+    'values': make_lists(list_of_comments)['list_of_lists'],
     'majorDimension': 'ROWS',
     }
     service = service_initiation()
@@ -72,6 +72,7 @@ def add_to_sheets():
     result = service.spreadsheets().values().append(
         spreadsheetId=spreadsheet_id, range="A2:J2",valueInputOption='USER_ENTERED',insertDataOption="INSERT_ROWS",
         body=body).execute()
+    return result
 
 
 # add_to_sheets()
@@ -82,8 +83,8 @@ def add_to_sheets():
 def get_values_from_sheets():
     service = service_initiation()
 
-    result1 = service.spreadsheets().values().get(
-    spreadsheetId=spreadsheet_id, range="A2").execute()
+    # result1 = service.spreadsheets().values().get(
+    # spreadsheetId=spreadsheet_id, range="A2").execute()
 
 
     # lookup the data on the last row
@@ -106,10 +107,10 @@ def is_same_thread():
         return None
     else:
         print("ADDDDING TO SHEEEEEETSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
-        add_to_sheets()
+        add_to_sheets(get_list_of_comments())
 
 
 def execute_sheets():
-    add_heading_to_sheets()
+    add_heading_to_sheets(get_list_of_comments())
     is_same_thread()
 
