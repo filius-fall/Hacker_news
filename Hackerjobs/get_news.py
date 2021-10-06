@@ -1,9 +1,18 @@
-from hackernews import HackerNews
 import html
 import json
+
 from datetime import datetime
 
+from hackernews import HackerNews
+
+
+
 def hn():
+    """HackerNews Instance
+    
+        This Function creates instance of HackerNews module we installed from pip library
+    """
+
     return HackerNews()
 
 
@@ -23,8 +32,6 @@ req_dict = {
 
 def get_hired_post_id():
 
-
-    # hired_post = [24038520]
     hired_post = [28719317]
     # posts_list = hn().ask_stories(limit=50)
     # for i in posts_list:

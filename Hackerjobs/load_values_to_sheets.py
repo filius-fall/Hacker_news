@@ -75,16 +75,12 @@ def add_to_sheets(list_of_comments):
     return result
 
 
-# add_to_sheets()
 
 
 
 
 def get_values_from_sheets():
     service = service_initiation()
-
-    # result1 = service.spreadsheets().values().get(
-    # spreadsheetId=spreadsheet_id, range="A2").execute()
 
 
     # lookup the data on the last row
@@ -102,11 +98,10 @@ def is_same_thread():
         last_value = int(get_values_from_sheets())
     except ValueError:
         last_value = 0
-    # print(last_value,new_thread_id)
+        
     if last_value == int(new_thread_id()):
         return None
     else:
-        print("ADDDDING TO SHEEEEEETSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
         add_to_sheets(get_list_of_comments())
 
 
