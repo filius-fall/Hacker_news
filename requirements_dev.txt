@@ -44,3 +44,4 @@ uritemplate==3.0.1
 urllib3==1.26.7
 wrapt @ file:///tmp/build/80754af9/wrapt_1607574498026/work
 yarl==1.6.3
+pytest==6.2.4

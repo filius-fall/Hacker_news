@@ -7,19 +7,6 @@ from hackernews import HackerNews
 
 
 
-def hn():
-    """HackerNews Instance
-    
-        This Function creates instance of HackerNews module we installed from pip library
-
-        Examples:
-            hn().get_item(<id>)    <id> must be an int
-            hn().get_user(<user>)  <user> must be a str          
-    """
-
-    return HackerNews()
-
-
 req_dict = {
         'submission_date': '',
         'link':'',
@@ -46,21 +33,24 @@ def get_hired_post_id():
         
     """
 
-    hired_post = [28719317]
-    # posts_list = hn().ask_stories(limit=50)
-    # for i in posts_list:
-    #     if "who wants to be hired" in i.title.lower():
-    #             hired_post.append(i.item_id)
-    #             break
+    hired_post = []
+    hn = HackerNews()
+    posts_list = hn.ask_stories(limit=50)
+    for i in posts_list:
+        if "who wants to be hired" in i.title.lower():
+                hired_post.append(i.item_id)
+                break
 
     return hired_post
+
+
 
 def get_post_from_id():
     """ Get post object from ID
         Output:
                 Type: Object
     """
-    return hn().get_item(get_hired_post_id()[0])
+    return HackerNews().get_item(get_hired_post_id()[0])
 
 def get_post_comments():
     """Post comments
@@ -82,7 +72,7 @@ def get_list_of_comments():
         Type: List of int's
     
     """
-    return hn().get_items_by_ids(get_post_comments())
+    return HackerNews().get_items_by_ids(get_post_comments())
 
 
 list_of_dicts = []
@@ -110,7 +100,7 @@ def make_lists(list_of_comments):
             req_dict['date'] = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
             req_dict['text'] = html.unescape(i.text.replace('<p>','\n').replace('<code>','\n').replace('<pre>',' ').replace('</code>','\n'))
             req_dict['thread_link'] = "https://news.ycombinator.com/item?id=" + str(get_post_from_id().url)
-            req_dict['user_profile_link'] = "https://news.ycombinator.com/user?id="+str(hn().get_user(str(i.by)).user_id)
+            req_dict['user_profile_link'] = "https://news.ycombinator.com/user?id="+str(HackerNews().get_user(str(i.by)).user_id)
 
             # This will append the 'req_dict' with values of keys of respective comment object
             list_of_dicts.append(req_dict)
@@ -129,6 +119,7 @@ def new_thread_id():
             This will return the comment ID of the last added post
     """
     list_of_comments = make_lists(get_list_of_comments())
+    # print(list_of_comments)
     list_of_dicts_value = list_of_comments['list_of_dicts']
     thread_id_last_post = list_of_dicts_value[0]['thread_id']
 

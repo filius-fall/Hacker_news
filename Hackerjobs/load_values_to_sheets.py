@@ -124,9 +124,9 @@ def get_values_from_sheets():
         val = result['values']              # This will give values key value of result dictionary
         last_thread = val[-1]               # This will give last comment list
         thread_id_value = last_thread[-2]   # This will get penultimate value which is thread_id so [-2]
-        
-        return int(thread_id_value)
-    except KeyError:
+        thread_value = int(thread_id_value)
+        return thread_value
+    except ValueError:
         return 0
 
 def is_same_thread():
