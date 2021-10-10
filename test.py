@@ -1,50 +1,7 @@
-# from unittest.mock import Mock
-# import datetime
+from Hackerjobs.get_news import get_list_of_comments,make_lists,new_thread_id
 
-# tuesday = datetime.datetime(year=2019,month=1,day=1)
-# saturday = datetime.datetime(year=2019,month=1,day=5)
-
-# datetime = Mock()
-
-# def is_weekday():
-
-#     today = datetime.datetime.today()
-#     print(today.weekday())
-#     return (0 <= today.weekday() < 5)
+print(new_thread_id())
 
 
-# print(datetime.datetime.today())
-
-# datetime.datetime.today.return_value = tuesday
-
-# assert is_weekday()
-
-import pytest
-from requests.exceptions import Timeout
-from unittest.mock import Mock
-
-# Mock requests to control its behavior
-requests = Mock()
-
-def get_holidays():
-    r = requests.get('http://localhost/api/holidays')
-    print("kkkk")
-    if r.status_code == 200:
-        print("WORJING")
-        return r.json()
-    return None
-
-def test_get_hoildays_timeout():
-    mock_response = Mock()
-    mock_response.status_code = 200
-    mock_response.json.return_value = {'test':'working','second':'second_working'}
-    requests.get.side_effect = [Timeout,mock_response]
-
-    # print('didnt')
-    with pytest.raises(Timeout):
-        get_holidays()
-
-    assert get_holidays()['test'] == 'working'
-    # assert get_holidays()['second'] == 'second_working'
-    assert requests.get.call_count == 2
-        
+list_of_lists = [['10/07/2021, 22:04:08', None, 'plow-tycoon', "\n \n  Location: Vancouver, Canada\n  Remote: Yes\n  Willing to relocate: Not at present, but open to Europe in the future\n  Technologies: Python, JavaScript (Vue, Node, React, others), Postgres, Unix, Golang, others\n  Résumé/CV: https://drive.google.com/file/d/1JKEmJGg7bn3K1PhuhASUCHAJJFOkwTKK/view?usp=sharing\n  Email: on Resume\n\n</pre>\nHi, I'm Luke, a front-end leaning developer based out of Vancouver, Canada. I've been working with JavaScript (and various component libraries such as React, Vue, Angular), HTML, CSS, Python, and others for some portion of the last decade. I find a lot of satisfaction in troubleshooting obscure issues and incrementally improving products, while working with good people or solo.\nI burnt out and lost my previous position after COVID hit, and since then I haven't found anything, instead working on side-projects and in whatever non-tech jobs I can in the meantime :) I recently received an offer that could have been life-changing, but it was rescinded upon the company's realization that hiring a remote worker in Canada was more complex than they were prepared for. I'm quite defeated by this, and by the interviewing gauntlet that I've been doing for over a year, but am still open to full-time, part-time, and contract work as an incorporated entity.\nIn my next position, I'm looking for something where I can see where my value to the customer is going. Working at too high of an abstraction level from the problems I solve isn't healthy.", 'https://news.ycombinator.com/item?id=None', 'https://news.ycombinator.com/user?id=plow-tycoon', '10/08/2021, 17:39:32', 28788638, 28719317, '22:04:08']
+]
