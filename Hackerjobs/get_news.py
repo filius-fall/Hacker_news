@@ -62,7 +62,7 @@ def get_post_comments():
             Type: List of objects 
     """
 
-    return get_post_from_id().kids[:10]
+    return get_post_from_id().kids
 
 def get_list_of_comments():
     """
